@@ -88,7 +88,10 @@ class PageView {
               <div class="card-container"></div>
             </div>
           </div>
-          <div class="right-section"></div>
+          <div class="right-section">
+            <h1>Cart</h1>
+            <div class="cart-container"></div>
+          </div>
         </div>
       </div>
     </div>
