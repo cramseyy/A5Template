@@ -181,6 +181,8 @@ class PageView {
     //Update the HTML with the product page content
     console.log("Product page");
 
+    this.RemoveCartTab();
+
     let template = `<div class="product-layout">
       <div class="product-header">
         <h1>{make} {model}</h1>
@@ -237,6 +239,36 @@ class PageView {
         e.preventDefault();
         app.handleGetNextProduct(currentProduct);
       });
+
+      if (!document.querySelector(".cartTab")) {
+      let cartTab = document.createElement("div");
+      cartTab.className = "cart-tab";
+      cartTab.innerHTML = `
+        <div class="cart-container-tab"></div>
+      `;
+      document.body.appendChild(cartTab);
+
+      let cartToggle = document.createElement("button");
+      cartToggle.className = "cart-tab-toggle";
+      cartToggle.textContent = "View Cart";
+      document.body.appendChild(cartToggle);
+
+      cartToggle.onclick = function() {
+        cartTab.classList.toggle("open");
+        if(cartTab.classList.contains("open")) {
+          root.classList.add("blur");
+        } else {
+          root.classList.remove("blur");
+        }
+      };
+    }
+  }
+
+  RemoveCartTab() {
+    let cartTab = document.querySelector(".cart-tab");
+    let cartToggle = document.querySelector(".cart-tab-toggle");
+    if (cartTab) cartTab.remove();
+    if (cartToggle) cartToggle.remove();
   }
 }
 
@@ -250,6 +282,7 @@ class PageController {
   }
 
   createMainPage() {
+    this.pageView.RemoveCartTab();
     let data = this.pageModel.GetProducts();
     this.pageView.CreateMainPage(data);
   }
