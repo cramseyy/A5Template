@@ -1,0 +1,131 @@
+[
+    {
+        "id": 0,
+        "make": "Porsche",
+        "model": "718",
+        "link": "/Porsche718.html",
+        "shortDescription": "A sleek mid-engine sports car offering sharp handling and powerful performance.",
+        "longDescription": "The Porsche 718 is a compact sports car that features a mid-engine layout, providing excellent balance and handling. It is available in both coupe and convertible forms, offering a thrilling driving experience with its powerful engines and precise steering.",
+        "image": "/img/porsche.jpg",
+        "price": "150,000",
+        "tags": [
+            "Porsche",
+            "Perfomance",
+            "Gas",
+            "Coupe"
+        ]
+    },
+    {
+        "id": 1,
+        "make": "Rolls-Royce",
+        "model": "Spectre",
+        "link": "/Rolls-RoyceSpectre.html",
+        "shortDescription": "The pinnacle of electric luxury—silent, smooth, and unmistakably prestigious.",
+        "longDescription": "The Rolls-Royce Spectre is a luxury electric coupe that embodies the brand's commitment to comfort and elegance. It features a spacious interior with high-quality materials, advanced technology, and a smooth, silent ride, making it a perfect choice for those who value luxury and sustainability.",
+        "image": "/img/rollsroyce.jpg",
+        "price": "420,000",
+        "tags": [
+            "Rolls Royce",
+            "Ultra-Luxury",
+            "Sedan",
+            "Electric"
+        ]
+    },
+    {
+        "id": 2,
+        "make": "Range Rover",
+        "model": "SVR",
+        "link": "/Range%20RoverSVR.html",
+        "shortDescription": "Luxury meets rugged power in this high-performance SUV built for all terrains.",
+        "longDescription": "The Land Rover Range Rover is a luxury SUV that combines off-road capabilities with premium features. It offers a spacious and opulent interior, advanced technology, and a range of powerful engines, making it suitable for both rugged terrains and city driving.",
+        "image": "/img/rangerover.jpg",
+        "price": "130,000",
+        "tags": [
+            "Land Rover",
+            "Luxury",
+            "SUV",
+            "Gas"
+        ]
+    },
+    {
+        "id": 3,
+        "make": "Ford",
+        "model": "Raptor",
+        "link": "/FordRaptor.html",
+        "shortDescription": "A bold and aggressive truck with off-road dominance and unmatched durability.",
+        "longDescription": "The Ford Raptor is a high-performance off-road truck that is built to tackle rugged terrains with ease. It features a powerful engine, advanced suspension system, and aggressive styling, making it a favorite among off-road enthusiasts who seek adventure and capability.",
+        "image": "/img/raptor.jpg",
+        "price": "100,000",
+        "tags": [
+            "Ford",
+            "Off-Road",
+            "Truck",
+            "Gas"
+        ]
+    },
+    {
+        "id": 4,
+        "make": "Mercedes-Benz",
+        "model": "S63 AMG",
+        "link": "/Mercedes-BenzS63%20AMG.html",
+        "shortDescription": "A perfect fusion of comfort, speed, and modern elegance in a luxury sedan.",
+        "longDescription": "The Mercedes-Benz S63 AMG is a high-performance luxury sedan that combines the elegance of the S-Class with the power and agility of AMG performance enhancements. It features a powerful engine, advanced technology, and a luxurious interior, making it a top choice for those who desire both comfort and speed.",
+        "image": "/img/benz.jpg",
+        "price": "200,000",
+        "tags": [
+            "Mercedes",
+            "Luxury",
+            "Sedan",
+            "Gas",
+            "Perfomance"
+        ]
+    },
+    {
+        "id": 5,
+        "make": "BMW",
+        "model": "M3",
+        "link": "/BMWM3.html",
+        "shortDescription": "A legendary sports sedan delivering dynamic precision and daily drivability.",
+        "longDescription": "The BMW M3 is a high-performance sports sedan that is renowned for its dynamic handling and powerful engine. It offers a perfect blend of luxury and sportiness, with precise steering, responsive acceleration, and a driver-focused interior, making it a favorite among driving enthusiasts.",
+        "image": "/img/bmw.jpg",
+        "price": "100,000",
+        "tags": [
+            "BMW",
+            "Perfomance",
+            "Gas",
+            "Sedan"
+        ]
+    },
+    {
+        "id": 6,
+        "make": "Audi",
+        "model": "R8",
+        "link": "/AudiR8.html",
+        "shortDescription": "A stunning supercar with exotic styling and a naturally aspirated V10 engine.",
+        "longDescription": "The Audi R8 is a high-performance supercar that features a striking design and a powerful engine. It offers exceptional performance with its all-wheel-drive system, precise handling, and a luxurious interior, making it a top choice for those who seek both speed and style.",
+        "image": "/img/audi.jpg",
+        "price": "180,000",
+        "tags": [
+            "Audi",
+            "Perfomance",
+            "Gas",
+            "Coupe"
+        ]
+    },
+    {
+        "id": 7,
+        "make": "Mercedes-Benz",
+        "model": "G-Class",
+        "link": "/Mercedes-BenzG-Class.html",
+        "shortDescription": "An iconic SUV that combines military roots with eliteluxury and off-road capability.",
+        "longDescription": "The Mercedes-Benz G-Class is a luxury SUV that is known for its iconic styling and exceptional off-road capabilities. It features a rugged design, a spacious and luxurious interior, and advanced technology, making it a perfect choice for those who desire both luxury and adventure.",
+        "image": "/img/gclass.jpg",
+        "price": "160,000",
+        "tags": [
+            "Mercedes",
+            "Luxury",
+            "SUV",
+            "Off-Road"
+        ]
+    }    
+]
