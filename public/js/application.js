@@ -1,54 +1,74 @@
 //The Model is used to retrive and manipulate data
 class PageModel {
-  GetProducts() {
+  GetProducts(callback) {
     let data = {};
-    //Call REST API using XMLHttpRequest
     var xhttp = new XMLHttpRequest();
     let url = "/application/product";
-    xhttp.open("GET", url, false);
+
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && xhttp.status == 200) {
+        let data = JSON.parse(this.responseText);
+        callback(data);
+      }
+    };
+
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Accept", "application/JSON");
     xhttp.send();
-    if (xhttp.status == 200) {
-      data = JSON.parse(xhttp.responseText);
-    }
-    return data;
   }
 
-  GetProductsById(id) {
+  GetProductsById(id, callback) {
     let data = {};
     var xhttp = new XMLHttpRequest();
     let url = `/application/product/${id}`;
-    xhttp.open("GET", url, false);
+
+    xhttp.open("GET", url, true);
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && xhttp.status == 200) {
+        let data = JSON.parse(this.responseText);
+        callback(data);
+      }
+    };
+
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Accept", "application/JSON");
     xhttp.send();
-    if (xhttp.status == 200) {
-      data = JSON.parse(xhttp.responseText);
-    }
-    return data;
   }
 
-  GetProductsByFilter(filter) {
+  GetProductsByFilter(filter, callback) {
     let data = {};
     var xhttp = new XMLHttpRequest();
     let url = `/application/product?filter=${filter}`;
-    xhttp.open("GET", url, false);
+
+    xhttp.open("GET", url, true);
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && xhttp.status == 200) {
+        let data = JSON.parse(this.responseText);
+        callback(data);
+      }
+    };
+
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Accept", "application/JSON");
     xhttp.send();
-    if (xhttp.status == 200) {
-      data = JSON.parse(xhttp.responseText);
-    }
-    // console.log("Data from filter: ", data);
-    return data;
   }
 
-  GetProductsBySearch(searchText) {
+  GetProductsBySearch(searchText, callback) {
     let data = {};
     var xhttp = new XMLHttpRequest();
     let url = `/application/product?search=${searchText}`;
-    xhttp.open("GET", url, false);
+
+    xhttp.open("GET", url, true);
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && xhttp.status == 200) {
+        let data = JSON.parse(this.responseText);
+        callback(data);
+      }
+    };
+
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Accept", "application/JSON");
     xhttp.send();
-    if (xhttp.status == 200) {
-      data = JSON.parse(xhttp.responseText);
-    }
-    console.log("Data from search: ", data);
-    return data;
   }
 }
 
@@ -240,7 +260,7 @@ class PageView {
         app.handleGetNextProduct(currentProduct);
       });
 
-      if (!document.querySelector(".cartTab")) {
+    if (!document.querySelector(".cartTab")) {
       let cartTab = document.createElement("div");
       cartTab.className = "cart-tab";
       cartTab.innerHTML = `
@@ -253,9 +273,9 @@ class PageView {
       cartToggle.textContent = "View Cart";
       document.body.appendChild(cartToggle);
 
-      cartToggle.onclick = function() {
+      cartToggle.onclick = function () {
         cartTab.classList.toggle("open");
-        if(cartTab.classList.contains("open")) {
+        if (cartTab.classList.contains("open")) {
           root.classList.add("blur");
         } else {
           root.classList.remove("blur");
@@ -283,23 +303,27 @@ class PageController {
 
   createMainPage() {
     this.pageView.RemoveCartTab();
-    let data = this.pageModel.GetProducts();
-    this.pageView.CreateMainPage(data);
+    this.pageModel.GetProducts((data) => {
+      this.pageView.CreateMainPage(data);
+    });
   }
 
   handleProductClick(id) {
-    let data = this.pageModel.GetProductsById(id);
-    this.pageView.CreateProductPage(data);
+    this.pageModel.GetProductsById(id, (data) => {
+      this.pageView.CreateProductPage(data);
+    });
   }
 
   handleFilterClick(filter) {
-    let data = this.pageModel.GetProductsByFilter(filter);
-    this.pageView.CreateMainPage(data, filter, "");
+    this.pageModel.GetProductsByFilter(filter, (data) => {
+      this.pageView.CreateMainPage(data, filter, "");
+    });
   }
 
   handleSearch(searchText) {
-    let data = this.pageModel.GetProductsBySearch(searchText);
-    this.pageView.CreateMainPage(data, "", searchText);
+    this.pageModel.GetProductsBySearch(searchText, (data) => {
+      this.pageView.CreateMainPage(data, "", searchText);
+    });
   }
 
   handleRemoveFilter() {
@@ -307,12 +331,13 @@ class PageController {
   }
 
   handleGetNextProduct(id) {
-    if (id == this.pageModel.GetProducts().products.length - 1) {
-      id = -1;
-    }
-    let nextProductid = id + 1;
-    let nextProduct = this.pageModel.GetProductsById(nextProductid);
-    this.pageView.CreateProductPage(nextProduct);
+    this.pageModel.GetProducts((productsData) => {
+      let products = productsData.products;
+      let nextId = (id + 1) % products.length;
+      this.pageModel.GetProductsById(nextId, (nextProduct) => {
+        this.pageView.CreateProductPage(nextProduct);
+      });
+    });
   }
 }
 

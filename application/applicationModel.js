@@ -8,18 +8,17 @@ class applicationModel {
 
   //initialize the bookList with books
   initialize() {
-    this.products = JSON.parse(
-      fs.readFileSync("./application/data/applicationData.json")
-    );
+    fs.readFile("./application/data/applicationData.json", (err, data) => {
+      this.products = JSON.parse(data);
+      this.filters = [];
 
-    this.filters = [];
-
-    //Loop through products to create the filters.
-    this.products.forEach((item) => {
-      item.tags.forEach((tag) => {
-        if (!this.filters.includes(tag)) {
-          this.filters.push(tag);
-        }
+      //Loop through products to create the filters.
+      this.products.forEach((item) => {
+        item.tags.forEach((tag) => {
+          if (!this.filters.includes(tag)) {
+            this.filters.push(tag);
+          }
+        });
       });
     });
   }
@@ -33,11 +32,11 @@ class applicationModel {
   }
 
   getProductById(id) {
-    return (this.products.find((product) => product.id == id));
+    return this.products.find((product) => product.id == id);
   }
 
   getProductByFilter(tag) {
-    return (this.products.filter((product) => product.tags.includes(tag)))
+    return this.products.filter((product) => product.tags.includes(tag));
   }
 
   getProductBySearch(searchText) {
@@ -49,13 +48,13 @@ class applicationModel {
   }
 
   getFilterCounts() {
-	let counts = {}
-	this.products.forEach(product => {
-		product.tags.forEach(tag => {
-			counts[tag] = (counts[tag] || 0) + 1;
-		});
-	});
-	return counts;
+    let counts = {};
+    this.products.forEach((product) => {
+      product.tags.forEach((tag) => {
+        counts[tag] = (counts[tag] || 0) + 1;
+      });
+    });
+    return counts;
   }
 }
 
