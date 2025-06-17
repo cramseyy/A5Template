@@ -4,6 +4,7 @@ const fs = require("fs");
 class applicationModel {
   constructor() {
     this.initialize();
+    this.cart = [];
   }
 
   //initialize the bookList with books
@@ -56,6 +57,26 @@ class applicationModel {
     });
     return counts;
   }
+
+  getCart() {
+    console.log("getting cart model")
+    return this.cart;
+  }
+
+  addToCart(id) {
+    if (!this.cart.find(item => item.id == id)) {
+      let product = this.getProductById(id);
+      if (product) {
+        this.cart.push(product);
+      }
+    }
+    return this.cart;
+  }
+
+  // removeFromCart(id) {
+  //   this.cart = this.cart.filter(item => item.id != id);
+  //   return this.cart;
+  // }
 }
 
 module.exports = applicationModel;

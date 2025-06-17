@@ -24,6 +24,22 @@ class application {
     let data = ApplicationModel.getProductById(id);
     res.send(data);
   }
+
+  static getCart(req, res) {
+    console.log("getting cart");
+    res.send({ products: ApplicationModel.getCart() });
+  }
+
+  static addToCart(req, res) {
+    console.log("adding to cart");
+    const { productId } = req.body;
+    res.send({ products: ApplicationModel.addToCart(productId) });
+  }
+
+  // static removeFromCart(req, res) {
+  //   console.log("removing from cart");
+    
+  // }
 }
 
 module.exports = application;

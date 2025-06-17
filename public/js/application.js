@@ -7,7 +7,7 @@ class PageModel {
 
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && xhttp.status == 200) {
-        let data = JSON.parse(this.responseText);
+        data = JSON.parse(this.responseText);
         callback(data);
       }
     };
@@ -22,10 +22,9 @@ class PageModel {
     var xhttp = new XMLHttpRequest();
     let url = `/application/product/${id}`;
 
-    xhttp.open("GET", url, true);
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && xhttp.status == 200) {
-        let data = JSON.parse(this.responseText);
+        data = JSON.parse(this.responseText);
         callback(data);
       }
     };
@@ -40,10 +39,9 @@ class PageModel {
     var xhttp = new XMLHttpRequest();
     let url = `/application/product?filter=${filter}`;
 
-    xhttp.open("GET", url, true);
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && xhttp.status == 200) {
-        let data = JSON.parse(this.responseText);
+        data = JSON.parse(this.responseText);
         callback(data);
       }
     };
@@ -58,10 +56,9 @@ class PageModel {
     var xhttp = new XMLHttpRequest();
     let url = `/application/product?search=${searchText}`;
 
-    xhttp.open("GET", url, true);
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && xhttp.status == 200) {
-        let data = JSON.parse(this.responseText);
+        data = JSON.parse(this.responseText);
         callback(data);
       }
     };
@@ -70,13 +67,53 @@ class PageModel {
     xhttp.setRequestHeader("Accept", "application/JSON");
     xhttp.send();
   }
+
+  GetCart(callback) {
+    console.log("get cart req");
+    let data = {};
+    var xhttp = new XMLHttpRequest();
+    let url = `/application/cart`;
+
+    xhttp.open("GET", url, true);
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && xhttp.status == 200) {
+        data = JSON.parse(this.responseText);
+        callback(data);
+      }
+    };
+    xhttp.setRequestHeader("Accept", "application/JSON");
+    xhttp.send();
+  }
+
+  AddToCart(id, callback) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/application/cart", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && xhttp.status == 200) {
+        callback(JSON.parse(this.responseText));
+      }
+    };
+    xhttp.send(JSON.stringify({ productId: id }));
+  }
+
+  // RemoveFromCart(id, callback) {
+  //   var xhttp = new XMLHttpRequest();
+  //   xhttp.open("DELETE", `/application/cart/${id}`, true);
+  //   xhttp.onreadystatechange = function () {
+  //     if (this.readyState == 4 && xhttp.status == 200) {
+  //       callback(JSON.parse(this.responseText));
+  //     }
+  //   };
+  //   xhttp.send();
+  // }
 }
 
 //The View is used to update the page content
 class PageView {
   CreateMainPage(data, filter, searchText) {
     //Update the HTML with the main page content
-    console.log("Main page data: ", data);
+    // console.log("Main page data: ", data);
 
     let template = `
       <div class="layout">
@@ -229,6 +266,7 @@ class PageView {
       </div>
       <div class="product-footer">
         <button class="return-home-btn">Return Home</buton>
+        <button class="add-cart-btn">Add to Cart</button>
         <button class="next-product-btn">Next Product</button>
       </div>
     </div>`;
@@ -282,6 +320,13 @@ class PageView {
         }
       };
     }
+
+    let addCartBtn = document.querySelector(".add-cart-btn");
+    if (addCartBtn) {
+      addCartBtn.addEventListener("click", () => {
+        app.handleAddToCart(data.id);
+      });
+    }
   }
 
   RemoveCartTab() {
@@ -289,6 +334,37 @@ class PageView {
     let cartToggle = document.querySelector(".cart-tab-toggle");
     if (cartTab) cartTab.remove();
     if (cartToggle) cartToggle.remove();
+  }
+
+  RenderCart(cartData) {
+    console.log("Cart data: ", cartData);
+    let container =
+      document.querySelector(".cart-container") ||
+      document.querySelector(".cart-container-tab");
+    if (!container) {
+      return;
+    }
+    let products = cartData.products || [];
+    if (products.length === 0) {
+      container.innerHTML = "<p>Your cart is empty.</p>";
+      return;
+    }
+    let total = 0;
+    let html = "<ul style='list-style:none;padding:0;'>";
+    products.forEach((item) => {
+      total += item.price;
+      html += `<li>
+      ${item.make} ${item.model} - $${item.price}
+      <button class="remove-cart-btn" data-id="${item.id}">Remove</button>
+    </li>`;
+    });
+    html += `</ul><div style="margin-top:10px;font-weight:bold;">Total: $${total}</div>`;
+    container.innerHTML = html;
+
+    // Add remove button handlers
+    container.querySelectorAll(".remove-cart-btn").forEach((btn) => {
+      btn.onclick = () => app.handleRemoveFromCart(btn.getAttribute("data-id"));
+    });
   }
 }
 
@@ -305,12 +381,14 @@ class PageController {
     this.pageView.RemoveCartTab();
     this.pageModel.GetProducts((data) => {
       this.pageView.CreateMainPage(data);
+      this.loadCart();
     });
   }
 
   handleProductClick(id) {
     this.pageModel.GetProductsById(id, (data) => {
       this.pageView.CreateProductPage(data);
+      this.loadCart();
     });
   }
 
@@ -339,6 +417,25 @@ class PageController {
       });
     });
   }
+
+  loadCart() {
+    console.log("loading cart");
+    this.pageModel.GetCart((cartData) => {
+      this.pageView.RenderCart(cartData);
+    });
+  }
+
+  handleAddToCart(id) {
+    this.pageModel.AddToCart(id, () => {
+    this.loadCart();
+    });
+  }
+
+  // handleRemoveFromCart(id) {
+  //   this.pageModel.RemoveFromCart(id, () => {
+  //   this.loadCart();
+  //   });
+  // }
 }
 
 const app = new PageController(new PageModel(), new PageView());
