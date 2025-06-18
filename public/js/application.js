@@ -93,7 +93,7 @@ class PageModel {
     xhttp.open("POST", url, true);
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && xhttp.status == 200) {
-        data = JSON.parse(this.responseText)
+        data = JSON.parse(this.responseText);
         callback(data);
       }
     };
@@ -105,7 +105,7 @@ class PageModel {
   RemoveFromCart(id, callback) {
     let data = {};
     var xhttp = new XMLHttpRequest();
-    let url = `/application/cart/${id}`
+    let url = `/application/cart/${id}`;
 
     xhttp.open("DELETE", url, true);
     xhttp.onreadystatechange = function () {
@@ -347,28 +347,47 @@ class PageView {
 
   RenderCart(cartData) {
     console.log("Cart data: ", cartData);
+
     let container =
       document.querySelector(".cart-container") ||
       document.querySelector(".cart-container-tab");
     if (!container) {
       return;
     }
+
+    container.innerHTML = "";
+
     let products = cartData.products || [];
-    if (products.length === 0) {
-      container.innerHTML = "<p>Your cart is empty.</p>";
-      return;
-    }
     let total = 0;
-    let html = "<ul style='list-style:none;padding:0;'>";
     products.forEach((item) => {
-      total += item.price;
-      html += `<li>
-      ${item.make} ${item.model} - $${item.price}
-      <button class="remove-cart-btn" data-id="${item.id}">Remove</button>
-    </li>`;
+      let num = item.price.replace(',', "");
+      total += parseFloat(num);
     });
-    html += `</ul><div style="margin-top:10px;font-weight:bold;">Total: $${total}</div>`;
-    container.innerHTML = html;
+
+    let formattedTotal = total.toLocaleString();
+
+    let totalContainer = document.createElement("div");
+    totalContainer.classList.add("totalContainer");
+    totalContainer.innerHTML = `Total: $${formattedTotal}`;
+    container.appendChild(totalContainer);
+
+    if (products.length === 0) {
+      let emptyMsg = document.createElement("p");
+      emptyMsg.textContent = "Your cart is empty.";
+      container.appendChild(emptyMsg);
+      return;
+    } else {
+      // create cart items
+      products.forEach((item) => {
+        let cartItem = document.createElement("div");
+        cartItem.classList.add("cartItem");
+
+        cartItem.innerHTML = `<div class="cartItemInfo"><b>${item.make} ${item.model}</b> <p>$${item.price}</p></div>
+      <button class="remove-cart-btn" data-id="${item.id}">✖</button>`;
+
+        container.appendChild(cartItem);
+      });
+    }
 
     // Add remove button handlers
     container.querySelectorAll(".remove-cart-btn").forEach((btn) => {
@@ -439,14 +458,14 @@ class PageController {
 
   handleAddToCart(id) {
     this.pageModel.AddToCart(id, () => {
-    this.loadCart();
+      this.loadCart();
     });
   }
 
   handleRemoveFromCart(id) {
     console.log("deleting item");
     this.pageModel.RemoveFromCart(id, () => {
-    this.loadCart();
+      this.loadCart();
     });
   }
 }
