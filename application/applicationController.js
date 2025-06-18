@@ -32,13 +32,14 @@ class application {
 
   static addToCart(req, res) {
     console.log("adding to cart");
-    const { productId } = req.body;
+    let productId = req.body.productId;
     res.send({ products: ApplicationModel.addToCart(productId) });
   }
 
   static removeFromCart(req, res) {
     console.log("removing from cart");
-    
+    let id = req.params.id;
+    res.send({ products: ApplicationModel.removeFromCart(id) });
   }
 }
 

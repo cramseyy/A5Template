@@ -86,27 +86,36 @@ class PageModel {
   }
 
   AddToCart(id, callback) {
+    let data = {};
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/application/cart", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
+    let url = `/application/cart`;
+
+    xhttp.open("POST", url, true);
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && xhttp.status == 200) {
-        callback(JSON.parse(this.responseText));
+        data = JSON.parse(this.responseText)
+        callback(data);
       }
     };
+
+    xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify({ productId: id }));
   }
 
-  // RemoveFromCart(id, callback) {
-  //   var xhttp = new XMLHttpRequest();
-  //   xhttp.open("DELETE", `/application/cart/${id}`, true);
-  //   xhttp.onreadystatechange = function () {
-  //     if (this.readyState == 4 && xhttp.status == 200) {
-  //       callback(JSON.parse(this.responseText));
-  //     }
-  //   };
-  //   xhttp.send();
-  // }
+  RemoveFromCart(id, callback) {
+    let data = {};
+    var xhttp = new XMLHttpRequest();
+    let url = `/application/cart/${id}`
+
+    xhttp.open("DELETE", url, true);
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && xhttp.status == 200) {
+        data = JSON.parse(this.responseText);
+        callback(data);
+      }
+    };
+    xhttp.send();
+  }
 }
 
 //The View is used to update the page content
@@ -435,6 +444,7 @@ class PageController {
   }
 
   handleRemoveFromCart(id) {
+    console.log("deleting item");
     this.pageModel.RemoveFromCart(id, () => {
     this.loadCart();
     });
