@@ -73,10 +73,10 @@ class applicationModel {
     return this.cart;
   }
 
-  // removeFromCart(id) {
-  //   this.cart = this.cart.filter(item => item.id != id);
-  //   return this.cart;
-  // }
+  removeFromCart(id) {
+    this.cart = this.cart.filter(item => item.id != id);
+    return this.cart;
+  }
 }
 
 module.exports = applicationModel;

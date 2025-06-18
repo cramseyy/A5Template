@@ -300,14 +300,14 @@ class PageView {
 
     if (!document.querySelector(".cartTab")) {
       let cartTab = document.createElement("div");
-      cartTab.className = "cart-tab";
+      cartTab.className = "cartTab";
       cartTab.innerHTML = `
         <div class="cart-container-tab"></div>
       `;
       document.body.appendChild(cartTab);
 
       let cartToggle = document.createElement("button");
-      cartToggle.className = "cart-tab-toggle";
+      cartToggle.className = "cartTab-toggle";
       cartToggle.textContent = "View Cart";
       document.body.appendChild(cartToggle);
 
@@ -330,8 +330,8 @@ class PageView {
   }
 
   RemoveCartTab() {
-    let cartTab = document.querySelector(".cart-tab");
-    let cartToggle = document.querySelector(".cart-tab-toggle");
+    let cartTab = document.querySelector(".cartTab");
+    let cartToggle = document.querySelector(".cartTab-toggle");
     if (cartTab) cartTab.remove();
     if (cartToggle) cartToggle.remove();
   }
@@ -395,12 +395,14 @@ class PageController {
   handleFilterClick(filter) {
     this.pageModel.GetProductsByFilter(filter, (data) => {
       this.pageView.CreateMainPage(data, filter, "");
+      this.loadCart();
     });
   }
 
   handleSearch(searchText) {
     this.pageModel.GetProductsBySearch(searchText, (data) => {
       this.pageView.CreateMainPage(data, "", searchText);
+      this.loadCart();
     });
   }
 
@@ -414,6 +416,7 @@ class PageController {
       let nextId = (id + 1) % products.length;
       this.pageModel.GetProductsById(nextId, (nextProduct) => {
         this.pageView.CreateProductPage(nextProduct);
+        this.loadCart();
       });
     });
   }
@@ -431,11 +434,11 @@ class PageController {
     });
   }
 
-  // handleRemoveFromCart(id) {
-  //   this.pageModel.RemoveFromCart(id, () => {
-  //   this.loadCart();
-  //   });
-  // }
+  handleRemoveFromCart(id) {
+    this.pageModel.RemoveFromCart(id, () => {
+    this.loadCart();
+    });
+  }
 }
 
 const app = new PageController(new PageModel(), new PageView());

@@ -36,10 +36,10 @@ class application {
     res.send({ products: ApplicationModel.addToCart(productId) });
   }
 
-  // static removeFromCart(req, res) {
-  //   console.log("removing from cart");
+  static removeFromCart(req, res) {
+    console.log("removing from cart");
     
-  // }
+  }
 }
 
 module.exports = application;

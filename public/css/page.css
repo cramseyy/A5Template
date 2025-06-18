@@ -444,7 +444,7 @@ a:hover {
     max-height: 70vh;
 }
 
-.cart-tab {
+.cartTab {
   position: fixed;
   top: 0;
   right: -350px;
@@ -465,11 +465,11 @@ a:hover {
     border-radius: 10px;
 }
 
-.cart-tab.open {
+.cartTab.open {
     right: 0;
 }
 
-.cart-tab-toggle {
+.cartTab-toggle {
   position: fixed;
   top: 5%;
   right: 0;
@@ -484,12 +484,12 @@ a:hover {
   transition: transform 0.4s;
 }
 
-.cart-tab-toggle:hover {
+.cartTab-toggle:hover {
     cursor: pointer;
     background-color: rgb(107,46,45);
 }
 
-.cart-tab.open + .cart-tab-toggle {
+.cartTab.open + .cartTab-toggle {
   transform: translateX(-350px);
 }
 
